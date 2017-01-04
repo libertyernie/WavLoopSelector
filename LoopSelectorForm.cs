@@ -503,6 +503,18 @@ namespace WavLoopSelector
         private DateTime _sampleTime;
         private bool _playing = false;
         private bool _updating = false;
+
+        public bool ShowOkayCancelButtons
+        {
+            get
+            {
+                return panel4.Visible;
+            }
+            set
+            {
+                panel4.Visible = value;
+            }
+        }
         
         public LoopSelectorForm(IAudioStream audioStream)
         {
