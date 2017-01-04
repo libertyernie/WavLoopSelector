@@ -1,13 +1,10 @@
-﻿using System.ComponentModel;
-#if RSTMLIB
-#else
-using BrawlLib.IO;
-#endif
-using System.Audio;
-using BrawlLib.Wii.Audio;
-using BrawlLib.SSBBTypes;
+﻿using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
+using WavLoopSelector.Audio;
 
-namespace System.Windows.Forms
+namespace WavLoopSelector
 {
     public class BrstmConverterDialog : Form
     {
@@ -94,7 +91,7 @@ namespace System.Windows.Forms
             this.chkLoopEnable = new System.Windows.Forms.CheckBox();
             this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
-            this.customTrackBar1 = new System.Windows.Forms.CustomTrackBar();
+            this.customTrackBar1 = new CustomTrackBar();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.ddlEncoding = new System.Windows.Forms.ComboBox();
@@ -582,18 +579,8 @@ namespace System.Windows.Forms
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string AudioSource { get { return _audioSource; } set { _audioSource = value; } }
 
-#if RSTMLIB
         private byte[] _audioData;
         public byte[] AudioData { get { return _audioData; } }
-#else
-        private FileMap _audioData;
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public FileMap AudioData { get { return _audioData; } set { _audioData = value; } }
-#endif
-
-#if RSTMLIB
-        
-#endif
 
         private AudioProvider _provider;
         private AudioBuffer _buffer;
@@ -603,41 +590,22 @@ namespace System.Windows.Forms
         private DateTime _sampleTime;
         private bool _playing = false;
         private bool _updating = false;
-
-#if RSTMLIB
+        
         public BrstmConverterDialog(IAudioStream audioStream)
         {
             _sourceStream = audioStream;
             this.Text = "Loop Point Definition";
-#else
-        public BrstmConverterDialog()
-        {
-#endif
             InitializeComponent();
             tmrUpdate.Interval = 1000 / 60;
             dlgOpen.Filter = "PCM Audio (*.wav)|*.wav";
-            MaximumSize = new Drawing.Size(int.MaxValue, 216);
-
-            ddlEncoding.Items.Clear();
-            ddlEncoding.Items.Add(WaveEncoding.ADPCM);
-            ddlEncoding.Items.Add(WaveEncoding.PCM16);
-            ddlEncoding.SelectedIndex = 0;
+            MaximumSize = new Size(int.MaxValue, 216);
         }
 
         new public DialogResult ShowDialog(IWin32Window owner)
         {
             _audioData = null;
             DialogResult = DialogResult.Cancel;
-            //try 
-            //{ 
-                return base.ShowDialog(owner); 
-            //}
-            //catch (Exception x)
-            //{
-            //    DisposeProvider();  
-            //    MessageBox.Show(x.ToString());
-            //    return DialogResult.Cancel;
-            //}
+            return base.ShowDialog(owner); 
         }
 
         protected override void OnShown(EventArgs e)
@@ -650,26 +618,10 @@ namespace System.Windows.Forms
                 else
                     btnPlay.Enabled = false;
             }
-
-#if RSTMLIB
+            
             // _sourceStream is already populated by the constructor.
             LoadAudio("Internal audio");
             btnBrowse.Visible = false;
-#else
-            if (_audioSource == null)
-            {
-                if (!LoadAudio())
-                {
-                    Close();
-                    return;
-                }
-            }
-            else if (!LoadAudio(_audioSource))
-            {
-                Close();
-                return;
-            }
-#endif
 
             base.OnShown(e);
         }
@@ -700,17 +652,6 @@ namespace System.Windows.Forms
                 _buffer = null;
             }
 
-#if RSTMLIB
-#else
-            //Dispose stream
-            if (_sourceStream != null)
-            {
-                _sourceStream.Dispose();
-                _sourceStream = null;
-            }
-
-            chkLoopEnable.Checked = chkLoop.Checked = chkLoop.Enabled = false;
-#endif
             btnOkay.Enabled = false;
         }
 
@@ -723,12 +664,6 @@ namespace System.Windows.Forms
         private bool LoadAudio(string path)
         {
             DisposeSource();
-
-#if RSTMLIB
-#else
-            //Get audio stream
-            _sourceStream = WAV.FromFile(path);
-#endif
 
             _audioSource = path;
 
@@ -771,10 +706,6 @@ namespace System.Windows.Forms
 
             if (_type != 0)
                 groupBox3.Visible = false;
-
-#if RSTMLIB
-            groupBox3.Visible = false;
-#endif
 
             UpdateTimeDisplay();
 
@@ -905,23 +836,6 @@ namespace System.Windows.Forms
         private void btnOkay_Click(object sender, EventArgs e)
         {
             Stop();
-#if RSTMLIB
-#else
-            using (ProgressWindow progress = new ProgressWindow(this, String.Format("{0} Converter", _type == 0 ? "Brstm" : "Wave"), "Encoding, please wait...", false))
-                switch (_type)
-                {
-                    case 0:
-                        var encoding = (WaveEncoding)ddlEncoding.SelectedItem;
-                        _audioData = RSTMConverter.Encode(_sourceStream, progress, encoding);
-                        break;
-                    case 1:
-                        _audioData = RSARWaveConverter.Encode(_sourceStream, progress);
-                        break;
-                    case 2:
-                        _audioData = RWAVConverter.Encode(_sourceStream, progress);
-                        break;
-                }
-#endif
 
             DialogResult = DialogResult.OK;
             Close();

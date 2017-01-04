@@ -1,4 +1,6 @@
-﻿namespace System.Audio
+﻿using System;
+
+namespace WavLoopSelector.Audio
 {
     public abstract class AudioDevice
     {
@@ -7,7 +9,7 @@
         public string Description { get { return _description; } }
         public string Driver { get { return _driver; } }
 
-        public static AudioDevice[] PlaybackDevices
+        /*public static AudioDevice[] PlaybackDevices
         {
             get
             {
@@ -39,6 +41,6 @@
                 }
                 return null;
             }
-        }
+        }*/
     }
 }

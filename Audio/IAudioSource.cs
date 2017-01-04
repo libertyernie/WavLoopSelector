@@ -1,4 +1,4 @@
-﻿namespace System.Audio
+﻿namespace WavLoopSelector.Audio
 {
     public interface IAudioSource
     {

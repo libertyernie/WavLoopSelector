@@ -1,12 +1,11 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-#if RSTMLIB
-#else
-using BrawlLib.IO;
-#endif
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
 
-namespace System.Audio
-{
+namespace WavLoopSelector.Audio {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct WaveFormatEx
     {
@@ -230,7 +229,7 @@ namespace System.Audio
                 *riff = new RIFFHeader(1, source.Channels, 16, source.Frequency, sampleCount);
 
                 source.SamplePosition = samplePosition;
-                source.ReadSamples(address + 44, sampleCount);
+                source.ReadSamples((IntPtr)(address + 44), sampleCount);
 
                 if (appendSmplChunk && source.IsLooping)
                 {

@@ -1,4 +1,6 @@
-﻿namespace System.Audio
+﻿using System;
+
+namespace WavLoopSelector.Audio
 {
     public abstract class AudioBuffer : IDisposable
     {

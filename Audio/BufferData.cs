@@ -1,4 +1,6 @@
-﻿namespace System.Audio
+﻿using System;
+
+namespace WavLoopSelector.Audio
 {
     public struct BufferData
     {
@@ -41,7 +43,7 @@
             loop = loop && stream.IsLooping;
             int lastSample = loop ? stream.LoopEndSample : stream.Samples;
 
-            VoidPtr blockAddr = _part1Address;
+            IntPtr blockAddr = _part1Address;
             int blockRemaining = _part1Samples;
 
             while (sampleCount > 0)
@@ -51,7 +53,9 @@
 
                 //Fill zeros
                 if (end)
+                {
                     Memory.Fill(blockAddr, (uint)(blockSamples * blockAlign), 0);
+                }
                 else
                 {
                     //Do we extend within last sample range?

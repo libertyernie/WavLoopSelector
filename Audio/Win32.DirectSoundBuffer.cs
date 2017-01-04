@@ -1,7 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using System.Audio;
+﻿using System;
+using System.Runtime.InteropServices;
 
-namespace System
+namespace WavLoopSelector.Audio
 {
     static partial class Win32
     {
@@ -58,7 +58,7 @@ namespace System
             internal struct DSBufferPositionNotify
             {
                 public uint dwOffset;
-                public VoidPtr hEventNotify;
+                public IntPtr hEventNotify;
             }
 
             #endregion

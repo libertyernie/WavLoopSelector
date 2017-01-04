@@ -1,7 +1,8 @@
-﻿using System.Runtime.InteropServices;
-using DS = System.Win32.DirectSound;
+﻿using System;
+using System.Runtime.InteropServices;
+using DS = WavLoopSelector.Audio.Win32.DirectSound;
 
-namespace System.Audio
+namespace WavLoopSelector.Audio
 {
     unsafe class wAudioBuffer : AudioBuffer
     {
@@ -53,14 +54,20 @@ namespace System.Audio
             base.Dispose();
         }
 
+        private static int Align(int value, int align)
+        {
+            if (align == 0) return value;
+            return (value + align - 1) / align * align;
+        }
+
         public override BufferData Lock(int offset, int length)
         {
             BufferData data = new BufferData();
             uint len1, len2;
             IntPtr addr1, addr2;
 
-            offset = offset.Align(_blockAlign);
-            length = length.Align(_blockAlign);
+            offset = Align(offset, _blockAlign);
+            length = Align(length, _blockAlign);
             
             data._dataOffset = offset;
             data._dataLength = length;

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System;
 
-namespace System.Audio
+namespace WavLoopSelector.Audio
 {
     public abstract class AudioProvider : IDisposable
     {
@@ -15,17 +16,6 @@ namespace System.Audio
 
         public static AudioProvider Create(AudioDevice device)
         {
-#if RSTMLIB
-#else
-            if (device == null)
-            {
-                try
-                {
-                    return new alAudioProvider();
-                }
-                catch (TypeInitializationException) { }
-            }
-#endif
 
             switch (Environment.OSVersion.Platform)
             {

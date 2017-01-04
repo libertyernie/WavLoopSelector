@@ -1,4 +1,4 @@
-﻿namespace System.Audio {
+﻿namespace WavLoopSelector.Audio {
     public enum WaveFormatTag : ushort
     {
         WAVE_FORMAT_UNKNOWN = 0x0000, /* Microsoft Corporation */

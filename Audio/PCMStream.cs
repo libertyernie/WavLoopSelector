@@ -1,15 +1,11 @@
-﻿using BrawlLib.SSBBTypes;
+﻿using System;
 using System.Runtime.InteropServices;
 
-namespace System.Audio
+namespace WavLoopSelector.Audio
 {
     public unsafe class PCMStream : IAudioStream
     {
         private IntPtr _allocatedHGlobal = IntPtr.Zero;
-#if RSTMLIB
-#else
-        private BrawlLib.IO.FileMap _sourceMap;
-#endif
 
         private short* _source;
 
@@ -66,118 +62,7 @@ namespace System.Audio
             }
         }
 
-#if RSTMLIB
-#else
-        internal PCMStream(short* source, int samples, int sampleRate, int channels, int bps)
-        {
-            _sourceMap = null;
-
-            _bps = bps; //16
-            _numChannels = channels;
-            _frequency = sampleRate;
-            _numSamples = samples;
-
-            _source = source;
-            _samplePos = 0;
-        }
-
-        internal PCMStream(WaveInfo* pWAVE, VoidPtr dataAddr)
-        {
-            _frequency = pWAVE->_sampleRate;
-            _numSamples = pWAVE->NumSamples;
-            _numChannels = pWAVE->_format._channels;
-
-            _bps = pWAVE->_format._encoding == 0 ? 8 : 16;
-
-            if (_numSamples <= 0) return;
-
-            _loopStart = (int)pWAVE->LoopSample;
-            _loopEnd = _numSamples;
-
-            _source = (short*)dataAddr;
-            _samplePos = 0;
-        }
-#endif
-
-        internal static PCMStream[] GetStreams(RSTMHeader* pRSTM, VoidPtr dataAddr) {
-            HEADHeader* pHeader = pRSTM->HEADData;
-            StrmDataInfo* part1 = pHeader->Part1;
-            int c = part1->_format._channels;
-            PCMStream[] streams = new PCMStream[c.RoundUpToEven() / 2];
-
-            for (int i = 0; i < streams.Length; i++) {
-                int x = (i + 1) * 2 <= c ? 2 : 1;
-                streams[i] = new PCMStream(pRSTM, x, i * 2, dataAddr);
-            }
-
-            return streams;
-        }
-
-        internal PCMStream(RSTMHeader* header, int channels, int startChannel, void* audioSource) {
-            StrmDataInfo* info = header->HEADData->Part1;
-            if (channels > 2) throw new NotImplementedException("Cannot load PCM16 audio with more than 2 channels");
-            if (info->_format._channels < channels) throw new Exception("Not enough channels");
-            
-            int size = info->_numSamples * channels * sizeof(short);
-            _allocatedHGlobal = Marshal.AllocHGlobal(size);
-
-            byte* fromL = (byte*)audioSource;
-            byte* fromR = fromL;
-            byte* to = (byte*)_allocatedHGlobal;
-
-            bool stereo = channels == 2;
-
-            for (int block = 0; block < info->_numBlocks; block++)
-            {
-                int bs = (block == info->_numBlocks - 1)
-                    ? info->_lastBlockSize
-                    : info->_blockSize;
-
-                if (block == 0)
-                {
-                    fromL += (bs * startChannel);
-                    fromR += (bs * startChannel);
-                }
-                else
-                {
-                    fromL += bs * (info->_format._channels - channels);
-                    fromR += bs * (info->_format._channels - channels);
-                }
-
-                if (stereo)
-                    fromR += bs;
-                for (int i=0; i<bs; i+=2)
-                {
-                    to[0] = fromL[1];
-                    to[1] = fromL[0];
-                    fromL += 2;
-                    to += 2;
-                    if (stereo)
-                    {
-                        to[0] = fromR[1];
-                        to[1] = fromR[0];
-                        fromR += 2;
-                        to += 2;
-                    }
-                }
-                if (stereo)
-                    fromL += bs;
-            }
-
-            _bps = 16;
-            _numChannels = channels;
-            _frequency = info->_sampleRate;
-            _numSamples = info->_numSamples;
-
-            _source = (short*)_allocatedHGlobal;
-            _samplePos = 0;
-
-            _looped = info->_format._looped != 0;
-            _loopStart = info->_loopStartSample;
-            _loopEnd = _numSamples;
-        }
-
-        public int ReadSamples(VoidPtr destAddr, int numSamples)
+        public int ReadSamples(IntPtr destAddr, int numSamples)
         {
             short* sPtr = _source + (_samplePos * _numChannels);
             short* dPtr = (short*)destAddr;
@@ -200,14 +85,6 @@ namespace System.Audio
 
         public void Dispose()
         {
-#if RSTMLIB
-#else
-            if (_sourceMap != null)
-            {
-                _sourceMap.Dispose();
-                _sourceMap = null;
-            }
-#endif
             if (_allocatedHGlobal != IntPtr.Zero)
             {
                 Marshal.FreeHGlobal(_allocatedHGlobal);
