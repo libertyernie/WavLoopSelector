@@ -640,6 +640,7 @@ namespace WavLoopSelector
             } else {
                 numLoopStart.Value = _sourceStream.LoopStartSample;
                 numLoopEnd.Value = _sourceStream.LoopEndSample;
+                chkLoopEnable.Checked = true;
             }
 
             btnOkay.Enabled = true;

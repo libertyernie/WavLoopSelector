@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace WavLoopSelector.Audio {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -64,7 +61,7 @@ namespace WavLoopSelector.Audio {
             {
                 // Get first chunk in file
                 byte* ptr = Address + 12;
-                byte* end = Address + _length;
+                byte* end = Address + _length + 8;
                 while (ptr < end)
                 {
                     // There is more data in the file
@@ -202,9 +199,9 @@ namespace WavLoopSelector.Audio {
 
     public unsafe static class WAV
     {
-        public static IAudioStream FromFile(string path)
+        public static IAudioStream FromFile(string path, bool ignoreUnknownChunks = true)
         {
-            return new PCMStream(File.ReadAllBytes(path));
+            return new PCMStream(File.ReadAllBytes(path), ignoreUnknownChunks);
         }
 
         public static void ToFile(IAudioStream source, string path, int samplePosition = 0, int maxSampleCount = int.MaxValue)

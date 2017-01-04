@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace WavLoopSelector.Audio
 {
     public unsafe class PCMStream : IAudioStream
     {
+        public class UnknownChunkException : Exception
+        {
+            internal UnknownChunkException(string message) : base(message) { }
+        }
+
         private IntPtr _allocatedHGlobal = IntPtr.Zero;
 
         private short* _source;
@@ -35,7 +41,7 @@ namespace WavLoopSelector.Audio
             set { _samplePos = Math.Max(Math.Min(value, _numSamples), 0); }
         }
 
-        public PCMStream(byte[] wavData)
+        public PCMStream(byte[] wavData, bool ignoreUnknownChunks)
         {
             _allocatedHGlobal = Marshal.AllocHGlobal(wavData.Length);
             Marshal.Copy(wavData, 0, _allocatedHGlobal, wavData.Length);
@@ -59,6 +65,24 @@ namespace WavLoopSelector.Audio
                 _looped = true;
                 _loopStart = (int)loops[0]._dwStart;
                 _loopEnd = (int)loops[0]._dwEnd;
+            }
+
+            if (!ignoreUnknownChunks)
+            {
+                List<string> tags = new List<string>();
+                byte* ptr = (byte*)&header->_fmtChunk;
+                byte* end = (byte*)header + wavData.Length;
+                while (ptr < end)
+                {
+                    string tag = new string((sbyte*)ptr, 0, 4);
+                    if (tag != "fmt " && tag != "data" && tag != "smpl")
+                        tags.Add(tag);
+
+                    uint size = *((uint*)(ptr + 4));
+                    ptr += size + 8;
+                }
+                if (tags.Count > 0)
+                    throw new UnknownChunkException("PCMStream: The following chunks are present in the .wav file and will be discarded if you save: " + string.Join(", ", tags));
             }
         }
 
