@@ -14,7 +14,7 @@ namespace WavLoopSelector {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var s = Audio.WAV.FromFile(@"C:\Windows\Media\Ring08.wav");
-            using (BrstmConverterDialog dialog = new BrstmConverterDialog(s)) {
+            using (LoopSelectorForm dialog = new LoopSelectorForm(s)) {
                 dialog.ShowDialog();
             }
         }
