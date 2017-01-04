@@ -12,7 +12,6 @@ namespace WavLoopSelector
 
         private Button btnOkay;
         private Button btnCancel;
-        private TextBox txtPath;
         private CustomTrackBar customTrackBar1;
         private GroupBox groupBox1;
         private Label lblText2;
@@ -32,7 +31,6 @@ namespace WavLoopSelector
         private NumericUpDown numLoopEnd;
         private NumericUpDown numLoopStart;
         private GroupBox groupBox2;
-        private Panel panel3;
         private Panel panel4;
         private GroupBox grpLoop;
         private CheckBox chkLoop;
@@ -53,7 +51,6 @@ namespace WavLoopSelector
             this.components = new System.ComponentModel.Container();
             this.btnOkay = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.txtPath = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblSamples = new System.Windows.Forms.Label();
             this.lblFrequency = new System.Windows.Forms.Label();
@@ -75,7 +72,6 @@ namespace WavLoopSelector
             this.pnlLoopEnd = new System.Windows.Forms.Panel();
             this.spltStart = new System.Windows.Forms.Splitter();
             this.pnlLoopStart = new System.Windows.Forms.Panel();
-            this.customTrackBar1 = new WavLoopSelector.CustomTrackBar();
             this.grpLoop = new System.Windows.Forms.GroupBox();
             this.btnEndSet = new System.Windows.Forms.Button();
             this.btnStartSet = new System.Windows.Forms.Button();
@@ -83,21 +79,20 @@ namespace WavLoopSelector
             this.numLoopEnd = new System.Windows.Forms.NumericUpDown();
             this.lblEnd = new System.Windows.Forms.Label();
             this.lblStart = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.chkLoopEnable = new System.Windows.Forms.CheckBox();
             this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
+            this.customTrackBar1 = new WavLoopSelector.CustomTrackBar();
             this.groupBox1.SuspendLayout();
             this.pnlInfo.SuspendLayout();
             this.panel4.SuspendLayout();
             this.pnlEdit.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.pnlLoop.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.customTrackBar1)).BeginInit();
             this.grpLoop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLoopStart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLoopEnd)).BeginInit();
-            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.customTrackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOkay
@@ -123,16 +118,6 @@ namespace WavLoopSelector
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // txtPath
-            // 
-            this.txtPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPath.Location = new System.Drawing.Point(0, 0);
-            this.txtPath.Name = "txtPath";
-            this.txtPath.ReadOnly = true;
-            this.txtPath.Size = new System.Drawing.Size(326, 20);
-            this.txtPath.TabIndex = 2;
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.lblSamples);
@@ -142,7 +127,7 @@ namespace WavLoopSelector
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(158, 153);
+            this.groupBox1.Size = new System.Drawing.Size(158, 133);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "File Info";
@@ -225,7 +210,7 @@ namespace WavLoopSelector
             this.pnlInfo.Dock = System.Windows.Forms.DockStyle.Right;
             this.pnlInfo.Location = new System.Drawing.Point(326, 0);
             this.pnlInfo.Name = "pnlInfo";
-            this.pnlInfo.Size = new System.Drawing.Size(158, 182);
+            this.pnlInfo.Size = new System.Drawing.Size(158, 162);
             this.pnlInfo.TabIndex = 9;
             // 
             // panel4
@@ -233,7 +218,7 @@ namespace WavLoopSelector
             this.panel4.Controls.Add(this.btnOkay);
             this.panel4.Controls.Add(this.btnCancel);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel4.Location = new System.Drawing.Point(0, 153);
+            this.panel4.Location = new System.Drawing.Point(0, 133);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(158, 29);
             this.panel4.TabIndex = 6;
@@ -242,11 +227,10 @@ namespace WavLoopSelector
             // 
             this.pnlEdit.Controls.Add(this.groupBox2);
             this.pnlEdit.Controls.Add(this.grpLoop);
-            this.pnlEdit.Controls.Add(this.panel3);
             this.pnlEdit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlEdit.Location = new System.Drawing.Point(0, 0);
             this.pnlEdit.Name = "pnlEdit";
-            this.pnlEdit.Size = new System.Drawing.Size(326, 182);
+            this.pnlEdit.Size = new System.Drawing.Size(326, 162);
             this.pnlEdit.TabIndex = 10;
             // 
             // groupBox2
@@ -261,7 +245,7 @@ namespace WavLoopSelector
             this.groupBox2.Controls.Add(this.btnPlay);
             this.groupBox2.Controls.Add(this.customTrackBar1);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(0, 65);
+            this.groupBox2.Location = new System.Drawing.Point(0, 45);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(326, 117);
             this.groupBox2.TabIndex = 13;
@@ -372,17 +356,6 @@ namespace WavLoopSelector
             this.pnlLoopStart.TabIndex = 1;
             this.pnlLoopStart.SizeChanged += new System.EventHandler(this.pnlLoopStart_SizeChanged);
             // 
-            // customTrackBar1
-            // 
-            this.customTrackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.customTrackBar1.Location = new System.Drawing.Point(6, 19);
-            this.customTrackBar1.Name = "customTrackBar1";
-            this.customTrackBar1.Size = new System.Drawing.Size(314, 45);
-            this.customTrackBar1.TabIndex = 4;
-            this.customTrackBar1.UserSeek += new System.EventHandler(this.customTrackBar1_UserSeek);
-            this.customTrackBar1.ValueChanged += new System.EventHandler(this.customTrackBar1_ValueChanged);
-            // 
             // grpLoop
             // 
             this.grpLoop.Controls.Add(this.btnEndSet);
@@ -393,7 +366,7 @@ namespace WavLoopSelector
             this.grpLoop.Controls.Add(this.lblStart);
             this.grpLoop.Dock = System.Windows.Forms.DockStyle.Top;
             this.grpLoop.Enabled = false;
-            this.grpLoop.Location = new System.Drawing.Point(0, 20);
+            this.grpLoop.Location = new System.Drawing.Point(0, 0);
             this.grpLoop.Name = "grpLoop";
             this.grpLoop.Size = new System.Drawing.Size(326, 45);
             this.grpLoop.TabIndex = 15;
@@ -464,18 +437,9 @@ namespace WavLoopSelector
             this.lblStart.Text = "Start:";
             this.lblStart.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.txtPath);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(326, 20);
-            this.panel3.TabIndex = 14;
-            // 
             // chkLoopEnable
             // 
-            this.chkLoopEnable.Location = new System.Drawing.Point(49, 18);
+            this.chkLoopEnable.Location = new System.Drawing.Point(49, -2);
             this.chkLoopEnable.Name = "chkLoopEnable";
             this.chkLoopEnable.Size = new System.Drawing.Size(64, 20);
             this.chkLoopEnable.TabIndex = 13;
@@ -488,14 +452,25 @@ namespace WavLoopSelector
             this.tmrUpdate.Interval = 17;
             this.tmrUpdate.Tick += new System.EventHandler(this.tmrUpdate_Tick);
             // 
+            // customTrackBar1
+            // 
+            this.customTrackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.customTrackBar1.Location = new System.Drawing.Point(6, 19);
+            this.customTrackBar1.Name = "customTrackBar1";
+            this.customTrackBar1.Size = new System.Drawing.Size(314, 45);
+            this.customTrackBar1.TabIndex = 4;
+            this.customTrackBar1.UserSeek += new System.EventHandler(this.customTrackBar1_UserSeek);
+            this.customTrackBar1.ValueChanged += new System.EventHandler(this.customTrackBar1_ValueChanged);
+            // 
             // LoopSelectorForm
             // 
-            this.ClientSize = new System.Drawing.Size(484, 182);
+            this.ClientSize = new System.Drawing.Size(484, 162);
             this.Controls.Add(this.chkLoopEnable);
             this.Controls.Add(this.pnlEdit);
             this.Controls.Add(this.pnlInfo);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(500, 216);
+            this.MinimumSize = new System.Drawing.Size(500, 196);
             this.Name = "LoopSelectorForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
@@ -507,22 +482,16 @@ namespace WavLoopSelector
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.pnlLoop.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.customTrackBar1)).EndInit();
             this.grpLoop.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numLoopStart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLoopEnd)).EndInit();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.customTrackBar1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
 #endregion
-
-        private string _audioSource;
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string AudioSource { get { return _audioSource; } set { _audioSource = value; } }
-
+        
         private byte[] _audioData;
         public byte[] AudioData { get { return _audioData; } }
 
@@ -564,7 +533,7 @@ namespace WavLoopSelector
             }
             
             // _sourceStream is already populated by the constructor.
-            LoadAudio("Internal audio");
+            LoadAudio();
 
             base.OnShown(e);
         }
@@ -597,18 +566,10 @@ namespace WavLoopSelector
 
             btnOkay.Enabled = false;
         }
-
+        
         private bool LoadAudio()
         {
-            if (dlgOpen.ShowDialog(this) != DialogResult.OK)
-                return false;
-            return LoadAudio(dlgOpen.FileName);
-        }
-        private bool LoadAudio(string path)
-        {
             DisposeSource();
-
-            _audioSource = path;
 
             //Create buffer for stream
             if (_provider != null)
@@ -619,8 +580,7 @@ namespace WavLoopSelector
 
             //Set controls
             _sampleTime = new DateTime((long)_sourceStream.Samples * 10000000 / _sourceStream.Frequency);
-
-            txtPath.Text = path;
+            
             lblFrequency.Text = String.Format("{0} Hz", _sourceStream.Frequency);
             lblSamples.Text = String.Format("{0}", _sourceStream.Samples);
 
