@@ -21,4 +21,6 @@ Read-only usage:
 
     WavLoopSelector.exe [in-file]
 
+Both in-file and out-file can be '-' for stdin/stdout.
+
 In read-only mode, the OK and Cancel buttons will be hidden and no changes will be saved.

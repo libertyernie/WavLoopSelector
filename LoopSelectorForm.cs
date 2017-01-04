@@ -72,6 +72,7 @@ namespace WavLoopSelector
             this.pnlLoopEnd = new System.Windows.Forms.Panel();
             this.spltStart = new System.Windows.Forms.Splitter();
             this.pnlLoopStart = new System.Windows.Forms.Panel();
+            this.customTrackBar1 = new WavLoopSelector.CustomTrackBar();
             this.grpLoop = new System.Windows.Forms.GroupBox();
             this.btnEndSet = new System.Windows.Forms.Button();
             this.btnStartSet = new System.Windows.Forms.Button();
@@ -82,17 +83,16 @@ namespace WavLoopSelector
             this.chkLoopEnable = new System.Windows.Forms.CheckBox();
             this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
-            this.customTrackBar1 = new WavLoopSelector.CustomTrackBar();
             this.groupBox1.SuspendLayout();
             this.pnlInfo.SuspendLayout();
             this.panel4.SuspendLayout();
             this.pnlEdit.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.pnlLoop.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.customTrackBar1)).BeginInit();
             this.grpLoop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLoopStart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLoopEnd)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customTrackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOkay
@@ -356,6 +356,17 @@ namespace WavLoopSelector
             this.pnlLoopStart.TabIndex = 1;
             this.pnlLoopStart.SizeChanged += new System.EventHandler(this.pnlLoopStart_SizeChanged);
             // 
+            // customTrackBar1
+            // 
+            this.customTrackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.customTrackBar1.Location = new System.Drawing.Point(6, 19);
+            this.customTrackBar1.Name = "customTrackBar1";
+            this.customTrackBar1.Size = new System.Drawing.Size(314, 45);
+            this.customTrackBar1.TabIndex = 4;
+            this.customTrackBar1.UserSeek += new System.EventHandler(this.customTrackBar1_UserSeek);
+            this.customTrackBar1.ValueChanged += new System.EventHandler(this.customTrackBar1_ValueChanged);
+            // 
             // grpLoop
             // 
             this.grpLoop.Controls.Add(this.btnEndSet);
@@ -452,17 +463,6 @@ namespace WavLoopSelector
             this.tmrUpdate.Interval = 17;
             this.tmrUpdate.Tick += new System.EventHandler(this.tmrUpdate_Tick);
             // 
-            // customTrackBar1
-            // 
-            this.customTrackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.customTrackBar1.Location = new System.Drawing.Point(6, 19);
-            this.customTrackBar1.Name = "customTrackBar1";
-            this.customTrackBar1.Size = new System.Drawing.Size(314, 45);
-            this.customTrackBar1.TabIndex = 4;
-            this.customTrackBar1.UserSeek += new System.EventHandler(this.customTrackBar1_UserSeek);
-            this.customTrackBar1.ValueChanged += new System.EventHandler(this.customTrackBar1_ValueChanged);
-            // 
             // LoopSelectorForm
             // 
             this.ClientSize = new System.Drawing.Size(484, 162);
@@ -473,7 +473,6 @@ namespace WavLoopSelector
             this.MinimumSize = new System.Drawing.Size(500, 196);
             this.Name = "LoopSelectorForm";
             this.ShowIcon = false;
-            this.ShowInTaskbar = false;
             this.Text = "Loop Selector";
             this.groupBox1.ResumeLayout(false);
             this.pnlInfo.ResumeLayout(false);
@@ -482,10 +481,10 @@ namespace WavLoopSelector
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.pnlLoop.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.customTrackBar1)).EndInit();
             this.grpLoop.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numLoopStart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLoopEnd)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customTrackBar1)).EndInit();
             this.ResumeLayout(false);
 
         }
