@@ -79,8 +79,19 @@ Both in-file and out-file can be '-' for stdin/stdout.";
                 if (message != null)
                     dialog.Shown += (o, e) => MessageBox.Show(dialog, message);
 
-                if (outfile == null)
-                    dialog.ShowOkayCancelButtons = false;
+                dialog.FormClosing += (o, e) => {
+                    if (dialog.DialogResult == DialogResult.OK && outfile == null) {
+                        using (SaveFileDialog sfd = new SaveFileDialog()) {
+                            sfd.Filter = "16-bit PCM WAV files|*.wav";
+                            sfd.FileName = infile;
+                            if (sfd.ShowDialog(dialog) == DialogResult.OK) {
+                                outfile = sfd.FileName;
+                            } else {
+                                e.Cancel = true;
+                            }
+                        }
+                    }
+                };
 
                 if (owner != null) {
                     dialog.ShowDialog(owner);
