@@ -8,15 +8,11 @@ using WavLoopSelector.Audio;
 
 namespace WavLoopSelector {
     static class Program {
-        private const string USAGE = @"WAV Loop Selector
+        public const string USAGE = @"WAV Loop Selector
 https://github.com/libertyernie/WavLoopSelector
+2017-01-05
 
-This program is provided as-is without any warranty, implied
-or otherwise. By using this program, the end user agrees to
-take full responsibility regarding its proper and lawful use.
-The authors/hosts/distributors cannot be held responsible for
-any damage resulting in the use of this program, nor can they
-be held accountable for the manner in which it is used.
+This program is provided as-is without any warranty, implied or otherwise. By using this program, the end user agrees to take full responsibility regarding its proper and lawful use. The authors/hosts/distributors cannot be held responsible for any damage resulting in the use of this program, nor can they be held accountable for the manner in which it is used.
 
 Normal usage:
   WavLoopSelector.exe [in-file] [out-file]
@@ -33,16 +29,25 @@ Both in-file and out-file can be '-' for stdin/stdout.";
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            if (args.Length != 1 && args.Length != 2) {
-                MessageBox.Show(USAGE);
-                return 64;
+            if (args.Length == 0) {
+                Application.Run(new MainForm());
+                return 0;
+            } else {
+                if (args.Any(s => s == "--help" || s == "/?") || args.Length > 2) {
+                    MessageBox.Show(USAGE);
+                    return 64;
+                }
+
+                string infile = args[0];
+                string outfile = args.Length == 2
+                    ? args[1]
+                    : null;
+
+                return Main(null, infile, outfile);
             }
+        }
 
-            string infile = args[0];
-            string outfile = args.Length == 2
-                ? args[1]
-                : null;
-
+        public static int Main(Form owner, string infile, string outfile) {
             byte[] input;
             if (infile == "-") {
                 using (var stdin = Console.OpenStandardInput()) {
@@ -77,7 +82,11 @@ Both in-file and out-file can be '-' for stdin/stdout.";
                 if (outfile == null)
                     dialog.ShowOkayCancelButtons = false;
 
-                Application.Run(dialog);
+                if (owner != null) {
+                    dialog.ShowDialog(owner);
+                } else {
+                    Application.Run(dialog);
+                }
                 if (dialog.DialogResult != DialogResult.OK)
                     return 1;
             }
